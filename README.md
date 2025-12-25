@@ -12,7 +12,7 @@
 
  ### Installation
 
- - git clone https://github.com/yourusername/react-admin-dashboard.git
- - cd react-admin-dashboard
+ - git clone https://github.com/yogeshpatel09/react-admin-dashboard.git
+ - cd dashboard-app
  - npm install
  - npm run dev
