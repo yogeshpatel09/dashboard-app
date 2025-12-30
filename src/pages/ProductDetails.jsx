@@ -1,20 +1,17 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useContext } from "react";
 import Loader from "../components/Loader";
+import { ProductContext } from "../contextapi/ProductContext";
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { product, loading, fetchProductById } = useContext(ProductContext);
 
   useEffect(() => {
-    fetch(`https://fakestoreapi.com/products/${id}`)
-      .then(res => res.json())
-      .then(data => setProduct(data))
-      .finally(() => setLoading(false));
+    fetchProductById(id);
   }, [id]);
 
-  if (loading) return <Loader />;
+  if (loading || !product) return <Loader />;
 
   return (
     <div className="min-h-[90vh] bg-gray-50 flex justify-center px-4 py-8">
@@ -31,7 +28,6 @@ const ProductDetails = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-          
           <div className="flex justify-center items-center border rounded-xl p-4">
             <img
               src={product.image}
@@ -40,7 +36,6 @@ const ProductDetails = () => {
             />
           </div>
 
-          
           <div className="space-y-4">
 
             <div>

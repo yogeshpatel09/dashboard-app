@@ -1,16 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
+import { ProductContext } from "../contextapi/ProductContext";
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { products, loading, fetchProducts } = useContext(ProductContext);
 
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then(res => res.json())
-      .then(data => setProducts(data))
-      .finally(() => setLoading(false));
+    fetchProducts();
   }, []);
 
   if (loading) return <Loader />;
@@ -27,7 +24,7 @@ const Products = () => {
         {products.map(product => (
           <div
             key={product.id}
-            className="bg-green-50 border border-green-100 rounded-xl p-4 shadow hover:shadow-lg transition duration-200 flex flex-col"
+            className="bg-green-50 border border-green-100 rounded-xl p-4 shadow hover:shadow-lg transition flex flex-col"
           >
             <img
               src={product.image}
@@ -39,7 +36,9 @@ const Products = () => {
               {product.title}
             </h3>
 
-            <p className="text-green-700 font-semibold mb-2">₹ {product.price}</p>
+            <p className="text-green-700 font-semibold mb-2">
+              ₹ {product.price}
+            </p>
 
             <Link
               to={`/products/${product.id}`}
