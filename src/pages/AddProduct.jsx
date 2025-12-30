@@ -6,6 +6,8 @@ const AddProduct = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [imagePreview, setImagePreview] = useState(null);
+
   const [form, setForm] = useState({
     title: "",
     category: "",
@@ -21,6 +23,23 @@ const AddProduct = () => {
       .then(data => setCategories(data))
       .catch(() => toast.error("Failed to load categories"));
   }, []);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select a valid image");
+      return;
+    }
+
+    const previewURL = URL.createObjectURL(file);
+    setImagePreview(previewURL);
+
+
+    setForm({ ...form, image: previewURL });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -133,8 +152,15 @@ const AddProduct = () => {
               onChange={handleImageChange}
               className="mt-1 w-full text-sm"
             />
-          </div>
 
+          </div>
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="Preview"
+              className="mt-2 h-24 object-contain border rounded"
+            />
+          )}
           <button
             type="submit"
             disabled={loading}
